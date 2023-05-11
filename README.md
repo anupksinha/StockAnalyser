@@ -1,0 +1,2 @@
+# StockAnalyser
+Demonstrates c# TPL
