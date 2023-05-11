@@ -28,26 +28,26 @@ public partial class MainWindow : Window
     {
         BeforeLoadingStockData();
 
-        //var dataStore = new DataStore();
+        var dataStore = new DataStore();
 
-        //var responseTask = dataStore.GetStockPrices(StockIdentifier.Text);
+        var responseTask = dataStore.GetStockPrices(StockIdentifier.Text);
 
-        //Stocks.ItemsSource = await responseTask;
+        Stocks.ItemsSource = await responseTask;
 
 
-        using (var client = new HttpClient())
-        {
-            var responseTask = client.GetAsync($"{API_URL}/{StockIdentifier.Text}");
+        //using (var client = new HttpClient())
+        //{
+        //    var responseTask = client.GetAsync($"{API_URL}/{StockIdentifier.Text}");
 
-            var response = await responseTask;
+        //    var response = await responseTask;
 
-            var content = await response.Content.ReadAsStringAsync();
+        //    var content = await response.Content.ReadAsStringAsync();
 
-            var data = JsonConvert.DeserializeObject<IEnumerable<StockPrice>>(content);
+        //    var data = JsonConvert.DeserializeObject<IEnumerable<StockPrice>>(content);
 
-            Stocks.ItemsSource = data;
+        //    Stocks.ItemsSource = data;
 
-        }
+        //}
 
         AfterLoadingStockData();
     }
