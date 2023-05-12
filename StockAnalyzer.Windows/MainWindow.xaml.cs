@@ -1,8 +1,13 @@
 ﻿using StockAnalyzer.Core;
+using StockAnalyzer.Core.Domain;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Navigation;
 
 namespace StockAnalyzer.Windows;
@@ -19,12 +24,28 @@ public partial class MainWindow : Window
 
 
 
-    private async void Search_Click(object sender, RoutedEventArgs e)
+    private void Search_Click(object sender, RoutedEventArgs e)
     {
         try
         {
             BeforeLoadingStockData();
-            await GetStockPrices();
+            //await GetStockPrices();
+
+            Task.Run(() => 
+            {
+                var lines = File.ReadAllLines("StockPrices_Small.csv");
+                var data = new List<StockPrice>();
+                foreach (var line in lines.Skip(1))
+                {
+                    var price = StockPrice.FromCSV(line);
+                    data.Add(price);
+                }
+                Dispatcher.Invoke(() =>
+                { 
+                    Stocks.ItemsSource = data.Where(x => x.Identifier == StockIdentifier.Text);
+                });
+            });
+
         }
 
 
